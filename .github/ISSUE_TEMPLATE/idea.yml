@@ -1,0 +1,15 @@
+name: An idea
+description: A small improvement to the feel, accessibility or performance.
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you change?
+      description: Explain the experience you want to improve, not just a proposed implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: How does it keep things simple?
+      description: Consider reduced motion, performance and the no-dashboard approach.

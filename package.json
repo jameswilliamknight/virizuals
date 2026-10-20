@@ -1,0 +1,30 @@
+{
+  "name": "virizuals",
+  "description": "A fullscreen LCD-segment ripple playground with pixel-art waves and sparkles.",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/jameswilliamknight/virizuals.git" },
+  "homepage": "https://jameswilliamknight.github.io/virizuals/",
+  "engines": { "node": ">=24" },
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.4.1",
+  "scripts": {
+    "dev": "nuxt dev --host 127.0.0.1 --port 42119",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run",
+    "prepare": "nuxt prepare"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "nuxt": "^4.5.2",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.42"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.12",
+    "vue-tsc": "^3.3.13"
+  }
+}

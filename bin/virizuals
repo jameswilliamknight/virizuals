@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Resolve the ~/.local/bin symlink, independently of the caller's directory.
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -L "$SOURCE" ]]; do
+  DIR="$(cd -- "$(dirname -- "$SOURCE")" && pwd)"
+  LINK="$(readlink "$SOURCE")"
+  if [[ "$LINK" = /* ]]; then SOURCE="$LINK"; else SOURCE="$DIR/$LINK"; fi
+done
+APP_ROOT="$(cd -- "$(dirname -- "$SOURCE")/.." && pwd)"
+
+HEADLESS=false
+TAKEOVER=--no-takeover
+for ARG in "$@"; do
+  case "$ARG" in
+    --help|-h)
+      printf 'Usage: virizuals [--headless] [--takeover]\nLaunch at http://127.0.0.1:42119\n  --headless  Do not open a browser tab\n  --takeover  Explicitly replace this project\x27s running Nuxt dev server\n'
+      exit 0 ;;
+    --headless) HEADLESS=true ;;
+    --takeover) TAKEOVER=--takeover ;;
+    *) printf 'error: unknown option: %s\n' "$ARG" >&2; exit 2 ;;
+  esac
+done
+if ! command -v pnpm >/dev/null 2>&1; then
+  printf 'error: pnpm not found on PATH. Install pnpm and retry.\n' >&2; exit 1
+fi
+if [[ ! -d "$APP_ROOT/node_modules" ]]; then
+  printf 'error: dependencies missing. Run %s/install.sh first.\n' "$APP_ROOT" >&2; exit 1
+fi
+cd "$APP_ROOT"
+# Takeover requires explicit consent; never silently pick a different port.
+if [[ "$HEADLESS" = true ]]; then
+  exec pnpm exec nuxt dev --host 127.0.0.1 --port 42119 --strictPort "$TAKEOVER"
+fi
+exec pnpm exec nuxt dev --host 127.0.0.1 --port 42119 --strictPort "$TAKEOVER" --open
